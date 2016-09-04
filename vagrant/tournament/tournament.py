@@ -9,18 +9,35 @@ import psycopg2
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
     return psycopg2.connect("dbname=tournament")
-
-
+    
+    
 def deleteMatches():
     """Remove all the match records from the database."""
-
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute("DELETE FROM matches;")
+    db.commit() 
+    db.close()
+    print "after delete" 
 
 def deletePlayers():
     """Remove all the player records from the database."""
-
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute("DELETE FROM players;")
+    db.commit() 
+    db.close() 
 
 def countPlayers():
     """Returns the number of players currently registered."""
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute("SELECT count(*) from players;")
+    registered_players = cursor.fetchone()[0]
+    print "hello"
+    db.commit()
+    db.close()
+    return registered_players  
 
 
 def registerPlayer(name):
@@ -32,7 +49,6 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-
 
 def playerStandings():
     """Returns a list of the players and their win records, sorted by wins.
@@ -47,7 +63,13 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-
+    def playerStandings():
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute("SELECT * FROM standings")
+    rows = c.fetchall()
+    db.close()
+    return rows
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -75,3 +97,11 @@ def swissPairings():
     """
 
 
+
+
+"""
+1. how do we call the methods -- listing them at the very bottom?
+2. what is the difference between drop and delete?
+3. i can have multiple tables and join them 
+4. i need to create the serial id
+"""
