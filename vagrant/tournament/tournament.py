@@ -3,58 +3,75 @@
 # tournament.py -- implementation of a Swiss-system tournament
 #
 
+#!/usr/bin/env python
+#
+# tournament.py -- implementation of a Swiss-system tournament
+#
+
 import psycopg2
+
+import bleach
 
 
 def connect():
-    """Connect to the PostgreSQL database.  Returns a database connection."""
+    """Connect to the PostgreSQL database. Returns a database connection."""
     return psycopg2.connect("dbname=tournament")
-    
-    
+
+
 def deleteMatches():
     """Remove all the match records from the database."""
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
     c.execute("DELETE FROM matches;")
-    db.commit() 
+    db.commit()
     db.close()
-    print "after delete" 
+    print "matches deleted"
+
 
 def deletePlayers():
     """Remove all the player records from the database."""
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
     c.execute("DELETE FROM players;")
-    db.commit() 
-    db.close() 
+    db.commit()
+    db.close()
+    print "players deleted"
+
 
 def countPlayers():
     """Returns the number of players currently registered."""
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
-    c.execute("SELECT count(*) from players;")
-    registered_players = cursor.fetchone()[0]
-    print "hello"
+    c.execute("SELECT COUNT(*) FROM players;")
+    registered_players = c.fetchone()[0]
     db.commit()
     db.close()
-    return registered_players  
+    return registered_players
 
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
-  
+
     The database assigns a unique serial id number for the player.  (This
     should be handled by your SQL database schema, not in your Python code.)
-  
+
     Args:
       name: the player's full name (need not be unique).
     """
+    clean_name = bleach.clean(name)
+    print clean_name
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute("INSERT INTO players (name) VALUES (%s)", (clean_name,))
+    db.commit()
+    db.close()
+
 
 def playerStandings():
     """Returns a list of the players and their win records, sorted by wins.
 
-    The first entry in the list should be the player in first place, or a player
-    tied for first place if there is currently a tie.
+    The first entry in the list should be the player in first place,
+    or a player tied for first place if there is currently a tie.
 
     Returns:
       A list of tuples, each of which contains (id, name, wins, matches):
@@ -63,13 +80,14 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-    def playerStandings():
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
     c.execute("SELECT * FROM standings")
     rows = c.fetchall()
+    db.commit()
     db.close()
     return rows
+
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -78,16 +96,22 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
- 
- 
+    db = psycopg2.connect("dbname=tournament")
+    c = db.cursor()
+    c.execute
+    ("INSERT INTO matches (winner,loser) VALUES (%s, %s)", (winner, loser,))
+    db.commit()
+    db.close()
+
+
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
-  
+
     Assuming that there are an even number of players registered, each player
     appears exactly once in the pairings.  Each player is paired with another
     player with an equal or nearly-equal win record, that is, a player adjacent
     to him or her in the standings.
-  
+
     Returns:
       A list of tuples, each of which contains (id1, name1, id2, name2)
         id1: the first player's unique id
@@ -96,12 +120,20 @@ def swissPairings():
         name2: the second player's name
     """
 
+    standings = playerStandings()
+    print standings
+    print standings[0::2]
+    print standings[1::2]
+    print "\n\n"
+    pairs = []
 
+    zipped = zip(standings[0::2], standings[1::2])
+    print zipped
 
+    for p1, p2 in zipped:
+        pairs.append((p1[0], p1[1], p2[0], p2[1]))
+        print p1
+        print p2
+        print "\n  "
 
-"""
-1. how do we call the methods -- listing them at the very bottom?
-2. what is the difference between drop and delete?
-3. i can have multiple tables and join them 
-4. i need to create the serial id
-"""
+    return pairs
