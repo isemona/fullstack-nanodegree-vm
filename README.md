@@ -11,6 +11,6 @@ In order to successfully run the application, the Vagrant virtual machine must b
 
 Aside from this, a starter code is provided for this project and must be forked from Udacity's fullstack-nanodegree-vm reposistory. Once cloned into your local machine, you will find the following files(3):
 
-- tournament.sql : used to create my tables  
-- tournament.py  : used to manipulate data in the database in Python
-- tournament_test.p : test cases to test implementation of fuctions in tournament.py 
+- tournament.sql : a file used to create tables  
+- tournament.py  : a file used to manipulate data in the database in Python
+- tournament_test.py : a file containing test cases to test implementation of fuctions in tournament.py 
