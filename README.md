@@ -16,8 +16,6 @@ Aside from this, a starter code is provided for this project and must be forked 
 
 Most importantly, to successfully run the tournament.sql file, make sure you delete the database if it exists, create the database, then connect to it.
 
-DROP DATABASE IF EXISTS tournament;
-
-CREATE DATABASE tournament;
-
-\c tournament
+> DROP DATABASE IF EXISTS tournament;
+> CREATE DATABASE tournament;
+> \c tournament
