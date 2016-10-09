@@ -13,4 +13,11 @@ Aside from this, a starter code is provided for this project and must be forked 
 
 - tournament.sql : a file used to create tables  
 - tournament.py  : a file used to manipulate data in the database in Python
-- tournament_test.py : a file containing test cases to test implementation of fuctions in tournament.py 
+- tournament_test.py : a file containing test cases to test implementation of fuctions in tournament.py
+
+Most importantly, to successfully run the tournament.sql file, make sure you delete the database if it exists, create the database, then connect to it.
+
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
+
+\c tournament
