@@ -6,13 +6,17 @@
 -- You can write comments in this file by starting them with two dashes, like
 -- these lines here.
 
---to open this table on terminal use the command psql -f tournament.sql
---I created the database tournament on the terminal but I also could have created it here using CREATE DATABASE tournament; 
---just before \ctournament
+--"You want to use the computer for repetitive stuff so you can use your brain for hard stuff." -Philip
+--
 
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
 \c tournament
 
-CREATE TABLE players(id SERIAL PRIMARY KEY, name TEXT);
+CREATE TABLE players
+(id SERIAL 
+PRIMARY KEY, 
+name TEXT);
 
 CREATE TABLE matches
 (match_id SERIAL PRIMARY KEY,
@@ -36,6 +40,7 @@ ON players.id = matches.winner
 GROUP BY id
 ORDER BY wins DESC;
 
+/* Create standings view */
 CREATE VIEW standings AS
 SELECT matches_played.id, matches_played.name,
 COALESCE (player_wins.wins,0) AS wins,
@@ -45,6 +50,7 @@ LEFT JOIN player_wins
 ON matches_played.id = player_wins.id
 ORDER BY wins DESC;
 
+/* Create swisspairing view */
 CREATE VIEW swisspairing AS
 SELECT matches_played.id, matches_played.name,
 COALESCE (player_wins.wins,0) AS wins,

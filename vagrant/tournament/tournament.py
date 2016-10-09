@@ -62,7 +62,7 @@ def registerPlayer(name):
     print clean_name
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
-    c.execute("INSERT INTO players (name) VALUES (%s)", (clean_name,))
+    c.execute("INSERT INTO players(name) VALUES(%s)", (clean_name,))
     db.commit()
     db.close()
 
@@ -89,7 +89,7 @@ def playerStandings():
     return rows
 
 
-def reportMatch(winner, loser):
+def reportMatch(winner,loser):
     """Records the outcome of a single match between two players.
 
     Args:
@@ -98,8 +98,7 @@ def reportMatch(winner, loser):
     """
     db = psycopg2.connect("dbname=tournament")
     c = db.cursor()
-    c.execute
-    ("INSERT INTO matches (winner,loser) VALUES (%s, %s)", (winner, loser,))
+    c.execute("INSERT INTO matches(winner,loser) VALUES (%s,%s)", (winner,loser,))
     db.commit()
     db.close()
 
@@ -121,19 +120,12 @@ def swissPairings():
     """
 
     standings = playerStandings()
-    print standings
-    print standings[0::2]
-    print standings[1::2]
-    print "\n\n"
+    
     pairs = []
 
     zipped = zip(standings[0::2], standings[1::2])
-    print zipped
 
     for p1, p2 in zipped:
         pairs.append((p1[0], p1[1], p2[0], p2[1]))
-        print p1
-        print p2
-        print "\n  "
 
     return pairs
