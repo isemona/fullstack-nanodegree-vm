@@ -7,7 +7,7 @@
 -- these lines here.
 
 --"You want to use the computer for repetitive stuff so you can use your brain for hard stuff." -Philip
---
+
 
 DROP DATABASE IF EXISTS tournament;
 CREATE DATABASE tournament;
