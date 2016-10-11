@@ -18,6 +18,7 @@ In order to successfully run the application, the Vagrant virtual machine must b
 
 ## How to execute tests?
 In the vagrant environment:
+
 1. Navigate to 'cd /vagrant/tournament'
 2. Enter psql -f tournament.sql to fetch the tournament databse schema.
 3. Open another tab on the terminal.
